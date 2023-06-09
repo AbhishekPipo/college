@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Structure Questions</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.css">
+  <style>
+    .CodeMirror {
+      height: 300px;
+      border: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#"><img src="./assests/logo.png" alt=""></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+      
+    <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarSupportedContent">
+      
+      
+      <ul class="navbar-nav " style="display: flex; flex-direction: end;">
+        <li class="nav-item active">
+          <a class="nav-link" style=" border-radius: 10px;" href="./index.html">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" style=" border-radius: 10px;"href="./contests.html">Contests</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" style=" border-radius: 10px;"href="./rankings.html">Rankings</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="./reviews.html">Reviews</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <h1>Data Structure Questions</h1>
+  <ol id="question-list">
+    <li>Write a program to add two numbers.</li>
+    <li>Write a program to calculate the factorial of a number.</li>
+    <!-- Add more questions here -->
+  </ol>
+
+  <h2>Playground</h2>
+  <textarea id="code-editor"></textarea>
+  <button onclick="executeCode()">Run</button>
+
+  <div id="output-container"></div>
+
+  <h2>Timer</h2>
+  <div id="timer"></div>
+
+  <h2>Scoring</h2>
+  <div id="scoreboard"></div>
+
+  <button onclick="previousQuestion()">Previous</button>
+  <button onclick="nextQuestion()">Next</button>
+
+  <script>
+    var questionIndex = 0;
+    var startTime = null;
+    var scores = {};
+
+    function executeCode() {
+      var code = document.getElementById("code-editor").value;
+      var language = codeEditor.getOption("mode");
+
+      if (language === "text/x-c++src") {
+        runCodeCPlusPlus(code);
+      } else if (language === "text/x-java") {
+        runCodeJava(code);
+      } else if (language === "text/x-csrc") {
+        runCodeC(code);
+      } else {
+        alert("Unsupported language!");
+      }
+    }
+
+    function runCodeCPlusPlus(code) {
+      var outputContainer = document.getElementById("output-container");
+      outputContainer.innerHTML = "";
+
+      try {
+        var result = Module.ccall("addNumbers", "number", ["number", "number"], [5, 10]);
+        outputContainer.innerHTML = "Result: " + result;
+      } catch (error) {
+        outputContainer.innerHTML = "Error: " + error;
+      }
+    }
+
+    function runCodeJava(code) {
+      var outputContainer = document.getElementById("output-container");
+      outputContainer.innerHTML = "";
+
+      try {
+        // Execute Java code here
+        outputContainer.innerHTML = "Result: 15";
+      } catch (error) {
+        outputContainer.innerHTML = "Error: " + error;
+      }
+    }
+
+    function runCodeC(code) {
+      var outputContainer = document.getElementById("output-container");
+      outputContainer.innerHTML = "";
+
+      try {
+        // Execute C code here
+        outputContainer.innerHTML = "Result: 15";
+      } catch (error) {
+        outputContainer.innerHTML = "Error: " + error;
+      }
+    }
+
+    var codeEditor = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
+      lineNumbers: true,
+      mode: "text/x-c++src"
+    });
+
+    function previousQuestion() {
+      if (questionIndex > 0) {
+        questionIndex--;
+        updateQuestion();
+      }
+    }
+
+    function nextQuestion() {
+  if (questionIndex < questionList.length - 1) {
+    questionIndex++;
+    updateQuestion();
+    startTimer(); // Restart the timer for the new question
+  }
+}
+
+    function updateQuestion() {
+      var questionList = document.getElementById("question-list").getElementsByTagName("li");
+      var currentQuestion = questionList[questionIndex].innerText;
+      var questionContainer = document.getElementById("question-container");
+      var outputContainer = document.getElementById("output-container");
+
+      questionContainer.innerText = currentQuestion;
+      outputContainer.innerHTML = "";
+
+      // Reset the code editor value
+      codeEditor.setValue("");
+
+      // Reset the timer
+      stopTimer();
+      startTime = null;
+    }
+
+    function startTimer() {
+      startTime = new Date().getTime();
+      updateTimer();
+    }
+
+    function stopTimer() {
+      startTime = null;
+    }
+
+    function updateTimer() {
+      var timerContainer = document.getElementById("timer");
+
+      if (startTime) {
+        var currentTime = new Date().getTime();
+        var elapsedTime = currentTime - startTime;
+        var seconds = Math.floor(elapsedTime / 1000);
+        timerContainer.innerText = "Time Elapsed: " + seconds + "s";
+      } else {
+        timerContainer.innerText = "";
+      }
+
+      // Update the timer every second
+      setTimeout(updateTimer, 1000);
+    }
+
+    var questionList = document.getElementById("question-list").getElementsByTagName("li");
+    var questionContainer = document.createElement("div");
+    questionContainer.id = "question-container";
+    document.body.insertBefore(questionContainer, document.getElementById("playground"));
+
+    updateQuestion();
+    startTimer();
+  </script>
+  <script async src="https://emscripten.cdn.mozilla.net/releases/1.40.1/emscripten.js" onload="initializeEmscripten()"></script>
+</body>
+</html>
+
